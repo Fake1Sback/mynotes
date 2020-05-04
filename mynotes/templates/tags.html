@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+{% block content %}
+    <a class="btn btn-light px-3 py-1 add-tag-button" href="{{url_for('tgs.edittag') }}">Add new Tag</a>
+    {% for tag in tags.items %}
+    <div class="tag-container my-1 p-3">
+        <h3>{{tag.name}}</h3>
+        <p class="border-bottom mb-2">{{ tag.description }}</p>
+        <div>
+            <a class="btn btn-warning py-1 px-2" href="{{ url_for('tgs.edittag',tagid=tag.id) }}">Edit Tag</a>
+            <button class="btn btn-danger py-1 px-x del-item-button">Delete</button>
+        </div>
+        <div class="delete-confirm-container py-2 px-2">
+            <p class="mb-1">Are you sure you want to delete this tag?</p>
+            <a class="btn btn-secondary py-0 px-3" href="{{ url_for('tgs.deletetag',tagid=tag.id) }}">Yes</a>
+            <button class="abort-del btn btn-secondary py-0 px-3">No</button>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="my-3 pagination-container">
+        {% for page_number in tags.iter_pages() %}
+        {% if page_number == tags.page %}
+            <a class="btn btn-info" href="{{ url_for('tgs.tags',page=page_number) }}">{{ page_number }}</a>
+        {% else %}
+            <a class="btn btn-outline-info" href="{{ url_for('tgs.tags',page=page_number) }}">{{ page_number }}</a>
+        {% endif %}
+        {% endfor %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,35 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="py-1">
+    <span class="badge badge-info mb-2" style="font-size: 30px;">Attention!</span></br>
+    <div style="text-align: justify;" class="px-1 py-1 border-bottom">Usually article`s ID, TITLE, TAGS, CONTENT, DATE are stored unencrypted in database. Application provides you with the option to use encryption for article`s CONTENT. Encryption and decryption is done only on the client side. If encryption is used, article`s content is stored and sended in encrypted state.
+    </div>
+    <div class="px-1 pt-3 pb-2 border-bottom" style="text-align: justify;">
+        Here you can generate key for encrypting your articles. Service is using AES symetric (one key for encryption and decryption) encryption with key lenght of 256 bits. Key is generated on this page and is not sended to server. Server KNOWS that article was encrypted but has no information about the key.
+        To generate key you need to provide 2 parameters. First one is 
+        <span class="badge badge-secondary px-2">PASSPHRASE</span> on base of which key is generated. It is throw-away parameter and used only once. You can provide any phrase. 
+        Second is <span class="badge badge-secondary px-2">FILENAME</span> that will be given to the file which will store key information. You CAN use multiple keys to encrypt different articles.
+    </div>
+    <div class="px-1 pt-3 pb-2 border-bottom" style="text-align: justify;">
+        DO NOT SHARE THIS KEY WITH ANYONE unless you want to give another person access to your shared and encrypted article. Having the key user is able to encrypt and decrypt articles. Keys are stored on your device and in case key is lost you will not be able to encrypt and decrypt articles.
+    </div>
+    <div class="px-1 pt-3 pb-2" style="text-align: justify;">
+        When article is encrypted you will not be able to generate PDF from it, because it is stored on server which has no key to decrypt it. If you want to generate PDF from article remove encryption from the article first.
+    </div>
+</div>
+    <div class="mt-3 new-prepand-container">
+        <div class="px-3 py-2 new-prepand-left-item">Passphrase</div>
+        <input class="px-2 mx-2 new-prepand-flex" id='passphrase' type='text' required>
+    </div>
+    <div class="mt-2 new-prepand-container">
+        <div class="px-3 py-2 new-prepand-left-item">Filename</div>
+        <input id='filename' class="px-2 mx-2 new-prepand-flex" type='text' required>
+    </div>
+    <div class="mt-3 centered-container">
+        <button class="special-submit submit-button btn btn-outline-info" id='keygen'>Generate Key</button>
+    </div>
+{% endblock %}
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static',filename='./js/crypto-js.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='./js/keys.js') }}"></script>
+{% endblock scripts %}

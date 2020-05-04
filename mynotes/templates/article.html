@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='main_theme7.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='atelier-sulphurpool-light.css') }}">
+{% if encrypted %}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='decrypt.css') }}">
+<div id='key-managment-div'>
+    <h3>{{ article.title }}</h3>
+    {% if article.tags %}
+        {% for tag in article.tags %}
+        <span class="badge badge-info"> {{ tag.name }}</span>
+        {% endfor %}
+    {% endif %}
+    <p class="mt-1">This article was ecnrypted. Please provide the key to decrypt article</p>
+    <div class="form-group mb-0">
+        <label id='add-key-label' for="add-key-input"></label>
+        <input id='add-key-input' style="display: none;" type='file'>
+    </div>
+    <div id='add-key-name' class="mb-3 mt-1">No Key</div>
+    <div class="form-group centered-container">
+        <button id='add-decrypt-btn' class="btn btn-outline-info">Decrypt</button>
+    </div>
+    <input id='add-encrypted-content' type='text' style="opacity: 0;" value="{{ article.content }}">
+</div>
+<div id='main-div' style="opacity: 0;">
+{% else %}
+<div id='main-div'>
+{% endif %}
+    {% if not encrypted %}
+        <form id="Download-form" method="POST" action="{{ url_for('rticles.download') }}" style="opacity: 0;display: none;">
+            {{ form.hidden_tag() }}
+            {{ form.id(value=article.id) }}
+            {{ form.title(value=article.title) }}
+            {{ form.content(id="conte") }}
+        </form>
+        <button class="btn btn-light mb-0" style="width: 100%;" id="download-btn">Download Article</button>
+    {% endif %}
+    <div id='main-content'>
+        {{ article.content }}
+    </div>
+</div>
+{% endblock content %}
+{% block scripts %}
+    <script type="text/javascript" src=" {{ url_for('static',filename='js/showdown.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/highlight.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/article.js') }}"></script>
+    {% if encrypted %}
+        <script type="text/javascript" src="{{ url_for('static',filename='js/crypto-js.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/decrypt.js') }}"></script>
+    {% endif %}
+{% endblock scripts %}

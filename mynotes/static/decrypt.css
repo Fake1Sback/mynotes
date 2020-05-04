@@ -1,0 +1,35 @@
+#key-managment-div{
+    margin-top: 40px;
+}
+
+#add-key-label{
+    background-image: url('./images/key2.png');
+    width: 100%;
+    height: 200px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 200px 200px;
+    border:1px solid lightgray;
+    border-radius: 10px;
+    background-color: whitesmoke;
+}
+
+#add-key-name{
+    text-align: center;
+    vertical-align: middle;
+    border-bottom: 1px solid lightgray;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    width: 100%;
+}
+
+#add-decrypt-btn{
+    width: 300px;
+}
+
+.centered-container{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}

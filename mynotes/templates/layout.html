@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static',filename='main.css') }}" />
+</head>
+<body>
+    <header>
+        <div id="nav_background"></div> 
+        <div id="nav_menu" class="bg-dark">
+            <div>
+                <a class="nav-link" href="{{ url_for('rticles.articles') }}">Articles</a>
+            </div>
+            {% if current_user.is_authenticated %}
+            <div>
+                <a class="nav-link" href="{{ url_for('tgs.tags') }}">Tags</a>
+            </div>
+            <div>
+                <a class="nav-link" href="{{ url_for('kys.keys') }}">Keys</a>
+            </div>
+            {% endif %}
+            <div class="col-4"></div>
+            {% if current_user.is_authenticated %}
+            <div>
+                <a class="nav-link" href="{{ url_for('accounts.logout') }}">Logout</a>
+            </div>
+            {% else %}
+            <div>
+                <a class="nav-link" href="{{ url_for('accounts.register') }}">Register</a>
+            </div>
+            <div>
+                <a class="nav-link" href="{{ url_for('accounts.login') }}">Login</a>
+            </div>
+            {% endif %}
+            </div>
+        </div>
+        <button id="collapseButton"></button>
+    </header>
+    <main class="container mt-2">
+        <div class="row">
+            <div class="col-md-8 mb-4 mx-auto mr-auto">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }} mb-2">
+                    {{ message }}
+                </div>
+                {% endfor %}
+                {% endif %}
+                {% endwith %}
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </div>
+    </main>
+    <script src="{{ url_for('static',filename='./js/jquery-3.4.1.min.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <script src="{{ url_for('static',filename='./js/header.js')  }}"></script>
+    {% block scripts %}
+    {% endblock scripts %}
+</body>
+</html>

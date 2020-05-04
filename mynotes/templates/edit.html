@@ -1,0 +1,121 @@
+    <!DOCTYPE html>
+    <html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+            integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static',filename='edit.css') }}" />
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='main_theme7.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='atelier-sulphurpool-light.css') }}">
+    </head>
+
+    <body>
+        {% if articleid %}
+            {% if encrypted %}
+            <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='decrypt.css') }}">
+            <div id='key-managment-div' class="container">
+                <div  class="col-md-8 mb-4 mx-auto mr-auto">
+                    <h3>{{ form.title.data }}</h3>
+                    {% if title_tags %}
+                        {% for tag in title_tags %}
+                            <span class="badge badge-info"> {{ tag.name }}</span>
+                        {% endfor %}
+                    {% endif %}    
+                    <p class="mt-1" style="text-align: justify;">This article was ecnrypted. To edit the article you need at first to decrypt it. Please provide the key to decrypt article</p>
+                    <div style="width: 100%;" class="form-group mb-0">
+                        <label id="add-key-label" for="add-key-input"></label>
+                        <input id='add-key-input' style="display: none;" type='file'>
+                    </div>
+                    <div id='add-key-name' class="mb-3 mt-1">No Key</div>
+                    <div class="form-group centered-container">
+                        <button id='add-decrypt-btn' class="btn btn-outline-info">Decrypt</button>
+                    </div>
+                    <input id='add-encrypted-content' type='text' style="opacity: 0;" value="{{ form.content.data }}">
+                </div>
+            </div>
+            <div style="display: none;" class="caption badge-info py-1">Editing article</div>
+            <div style="display: none;" class="article-edit-container">
+            {% else %}
+            <div class="caption badge-info py-1">Editing article</div>
+            <div class="article-edit-container">
+            {% endif %}
+        {% else %}
+        <div class="caption badge-info py-1">New Article</div>
+        <div class="article-edit-container">
+        {% endif %}
+            <div id="initial">
+                {% if articleid %}
+                <input id='art-id-hidden' type="hidden" value="{{ articleid }}">
+                <form id='edit-form' method="POST" action="{{ url_for('rticles.edit',articleid=articleid) }}" autocomplete="off">
+                {% else %}
+                <form id='edit-form' method="POST" action="{{ url_for('rticles.edit') }}" autocomplete="off">         
+                {% endif %}
+                    {{ form.hidden_tag() }}
+                    <div class="form-group item my-1">
+                        {{ form.title(class="form-control form-control-lg my-1", id="title-input", placeholder="Title") }}
+                    </div>
+                    <div class="my-2 new-prepand-container">
+                        <div class="px-3 py-2 tags-prepand-label">Tags</div>
+                        <div class="my-1 px-1 mx-1" id="cont"></div>
+                        <input id="first" type='text' list="tags_datalist">
+                        {% if alltags %}
+                        <datalist id="tags_datalist">
+                            {% for tag in alltags %}
+                            <option value="{{ tag.name }}">
+                                {% endfor %}
+                        </datalist>
+                        {% endif %}
+                    </div>
+                    {{ form.tags(id="second") }}
+                    <div style="display: flex;flex-direction: row;justify-content: center;align-items: center;">
+                        <label class="btn-outline-info img-processing" for="download">Base64</label>
+                        <div id="base64_desc" class="mx-2 text-muted img-processing-text">
+                            Get the base64 representation of image into clipboard
+                        </div>
+                        <input type="file" id="download" style="opacity: 0;display: none;"></input>
+                        <input style="opacity: 0;height: 0;width: 0;padding: 0;margin: 0;" type="text" id='hiddenp'></input>
+                        <label class="btn-outline-info img-processing" id="url-download-label" for="url-download">URL</label>
+                        <div id="url_desc" class="mx-2 text-muted img-processing-text">
+                            Upload image on server and get the url into clipboard
+                        </div>
+                        <input type="file" id="url-download" style="display: none;opacity: 0;">
+                    </div>
+                    <div id="special" class="form-group mt-0 mb-2">
+                        {{ form.content(id="initialText", class="mb-0 mt-1 px-2 py-2") }}
+                    </div>
+                    <div id="sb-block" class="item my-2">
+                        <div style="display: flex;flex-direction: row;justify-content: center;align-items: center;">
+                            <label  id='key-label' for='key-file'></label>
+                            <input style="display: none;" id='key-file' type='file'>
+                            <div id='key-name' class="mx-2 px-2 py-1">No Key</div>
+                            {{ form.encrypted(style="display:none") }}
+                            <div id='rem-key' class="mx-2" style="display: none;"></div>
+                        </div>
+                        <div class="mx-2 switch-container">
+                            <div class="pre-switch-label">Shared?</div>
+                            <label class="switch bg-light mb-0">
+                            {{ form.shared() }}
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        {{ form.submit(id='form-submit-button',class="btn btn-outline-info mr-1 submit-button") }}
+                    </div>
+                </form>
+            </div>
+            <div id="middleLine">
+            </div>
+            <div id="result">
+                <div class="article-placeholder"></div>
+            </div>
+        </div>
+        <script type="text/javascript" src="{{ url_for('static',filename='./js/jquery-3.4.1.min.js') }}"></script>
+        <script type="text/javascript" src=" {{ url_for('static',filename='js/showdown.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/highlight.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/crypto-js.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static',filename='js/edit.js') }}"></script>
+        {% if encrypted %}
+            <script type="text/javascript" src="{{ url_for('static',filename='js/decrypt.js') }}"></script>
+        {% endif %}
+    </body>

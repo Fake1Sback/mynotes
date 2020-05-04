@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="content-section">
+    <form method="POST" action="{{ url_for('accounts.req_reset') }}">
+        {{form.hidden_tag()}}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Reset Password</legend>
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+                {{ form.email(class="form-control form-control-lg") }}
+                {% if form.email.errors %}
+                <div class="alert-danger">
+                {% for error in form.email.errors %}
+                    <span class="px-2">{{ error }} </span>
+                {% endfor %}
+                </div>
+            {% endif %}
+            </div>
+            <div class="form-group mt-0">
+                {{ form.submit(class="btn btn-outline-info") }}
+            </div>
+        </fieldset>
+    </form>
+</div>
+{% endblock %}

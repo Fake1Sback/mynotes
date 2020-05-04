@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="content-section">
+    <span class="badge badge-info mb-2" style="font-size: 30px;">Tags</span></br>
+    <div class="border-bottom my-1 pt-1 pb-2" style="text-align: justify;">
+        Tags are used to distinguish and classify articles.
+        Each tag has its own unique <span class="badge badge-secondary">TAG NAME</span> and <span class="badge badge-secondary">DESCRIPTION</span>.
+        Tags are owned by the users and can't exist separately. Each user has its own tags collection. 
+        One user CAN'T have multiple tags with the same name but user CAN have multiple tags with the same description.
+        Multiple tags with the same name CAN exist only if they are owned by different users.
+    </div>   
+    <div class="my-1 py-1" style="text-align: justify;">
+        Authenticated user can add existing tags to article tags list or remove it from there. Article can be marked with tag ONLY in case article and tag both have the same user. If tag's name or description is changed it will reflect on all articles.
+        If tag is deleted it will be removed from all article tags lists. Also user can search articles that have specified tags.
+    </div>
+    {% if tagid %}
+        <form method="POST" action="{{url_for('tgs.edittag',tagid=tagid)}}">
+    {% else %}
+        <form method="POST" action="{{url_for('tgs.edittag')}}">
+    {% endif%}
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <div class="mt-2 new-prepand-container">
+                <div class="px-3 py-2 new-prepand-left-item">Tag Name</div>
+                {{ form.name(class="px-2 mx-2 new-prepand-flex") }}            
+            </div>
+            {% if form.name.errors %}
+                <div class="alert-danger">
+                    {% for error in form.name.errors %}
+                    <span class="px-2">{{ error }} </span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <div class="mt-2 new-prepand-container">
+                <div class="px-3 py-2 new-prepand-left-item">Description</div>
+                {{ form.description(class="new-prepand-flex px-2 mx-2") }}
+            </div>
+            {% if form.description.errors %}
+            <div class="alert-danger">
+            {% for error in form.description.errors %}
+                <span class="px-2">{{ error }} </span>
+                {% endfor %}
+                </div>
+            {% endif %}
+        </fieldset>
+        <div class="form-group centered-container">
+            {{ form.submit(class="special-submit btn btn-outline-info") }}
+        </div>
+    </form>
+</div>
+{% endblock %}
