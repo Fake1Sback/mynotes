@@ -294,14 +294,14 @@ $(function () {
 				hiddenInput.value = '';
 
 				var desc = $('#url_desc');
-				desc.text('Link is in clipboard. Paste it to the article.');
+				desc.text('COPY: ' + '[Image Name ' + imageUploadCounter.toString() + ']:' + result);
 				desc.removeClass('text-muted');
 				desc.addClass('text-success');
 				setTimeout(function () {
 					desc.text('Upload image on server and get the url into clipboard');
 					desc.removeClass('text-success');
 					desc.addClass('text-muted');
-				}, 5000);
+				}, 10000);
 			},
 			error: function () {
 				var desc = $('#url_desc');
