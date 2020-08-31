@@ -3,6 +3,7 @@ converter.setOption('tables', true);
 converter.setOption('tasklists', true);
 converter.setOption('strikethrough',true);
 converter.setOption('backslashEscapesHTMLTags',true);
+converter.setOption('parseImgDimensions',true);
 //converter.setOption('simpleLineBreaks',true);
 
 var firstInput = $('#first');
