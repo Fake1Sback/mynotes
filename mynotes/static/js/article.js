@@ -21,8 +21,8 @@ function Highlight(){
 $(function(){ 
   
   $('#download-btn').on('click',function(){
-    var content = $('#main-content').html();
-    $('#conte').val($('#main-content').html());
+    var content = encodeURIComponent($('#main-content').html());
+    $('#conte').val(content);
     $('#Download-form').submit();
   });
 
