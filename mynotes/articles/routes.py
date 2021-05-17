@@ -7,7 +7,7 @@ from flask_login import current_user
 from rsa import DecryptionError
 from werkzeug.utils import secure_filename
 import pdfkit
-import os, io, secrets, imghdr
+import os, io, secrets, imghdr, urllib
 
 
 rticles = Blueprint('rticles',__name__)
@@ -250,13 +250,14 @@ def download():
         abort(500)
     id = form.id.data
     title = form.title.data
+    decoded_str = urllib.parse.unquote(form.content.data)
     content = f'''
     <html>
         <head>
             <meta charset='utf-8'>
         </head>
         <body>
-    {form.content.data} 
+    {decoded_str} 
         </body>
     </html>
     ''' 
